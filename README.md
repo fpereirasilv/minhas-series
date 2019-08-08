@@ -1,1 +1,1 @@
-# minhasseries
+# minhas-series
