@@ -6,10 +6,9 @@ const Series = () => {
   const [data, setData] = useState([])
   useEffect(() => {
     axios
-      .get('/api/series')
+      .get('/api/series/')
       .then(res => {
         setData(res.data.data)
-        console.log(res.data.data)
       })    
   }, [])
 

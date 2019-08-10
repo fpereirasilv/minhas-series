@@ -7,9 +7,9 @@ import { Badge } from 'reactstrap'
 const EditarSerie = ({ match }) => {
   const [form, setForm] = useState({})
   const [success, setSuccess] = useState(false)
-  const [mode, setMode] = useState('EDIT')
+  const [mode, setMode] = useState('INFO')
   const [genres, setGenres] = useState([])
-
+  
   const [data, setData] = useState({})
   useEffect(() => {
     axios
@@ -22,7 +22,7 @@ const EditarSerie = ({ match }) => {
 
   useEffect(() => {
     axios
-      .get('/api/genres')
+      .get('/api/genres/')
       .then(res => {
         setGenres(res.data.data)
       })
@@ -52,9 +52,11 @@ const EditarSerie = ({ match }) => {
         setSuccess(true)
       })
   }
+
   if (success){
     return <Redirect to='/series' />
   }
+  
   return(
     <div>
       <header style={masterheader}>
@@ -62,7 +64,7 @@ const EditarSerie = ({ match }) => {
           <div className='h-100 container'>
             <div className='row h-100 align-items-center'>
               <div className='col-3'>
-                <img alt={data.name} className='img-fluid img-thimbnail' src={data.poster}/>
+                <img alt={data.name} className='img-fluid img-thumbnail' src={data.poster}/>
               </div>
               <div className='col-8'>
                 <h1 className='font-weight-light text-white'>{data.name}</h1>
@@ -84,6 +86,7 @@ const EditarSerie = ({ match }) => {
        
       <div className='container'>
         <h1>Editar Série</h1>        
+        <pre>{JSON.stringify(form)}</pre>
         <form>
           <div className='form-group'>        
             <label htmlFor='name'>Nome</label>
@@ -91,11 +94,11 @@ const EditarSerie = ({ match }) => {
           </div>
           <div className='form-group'>        
             <label htmlFor='comentarios'>Comentários</label>
-            <input type='text' value={form.comments} onChange={onChange('comments')} className='form-control' id='nome' placeholder='Deixe seu comentátirio'/>
+            <input type='text' value={form.comments} onChange={onChange('comments')} className='form-control' id='comments' placeholder='Deixe seu comentátirio'/>
           </div>
           <div className='form-group'>
           <label htmlFor='genres'>Gêneros</label>  
-          <select className='form-control' onChange={onChange('genre_id')}>
+          <select className='form-control' onChange={onChange('genre')}>
             { genres.map(genre => <option key={genre.id} value={genre.id} select={genre.id === form.genre}>{genre.name}</option>)}
           </select>
           </div>  
