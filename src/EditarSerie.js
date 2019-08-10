@@ -8,8 +8,9 @@ const EditarSerie = ({ match }) => {
   const [success, setSuccess] = useState(false)
   const [mode, setMode] = useState('INFO')
   const [genres, setGenres] = useState([])
-  
+  const [genreId, setGenreId] = useState('')
   const [data, setData] = useState({})
+
   useEffect(() => {
     axios
       .get('/api/series/' + match.params.id)
@@ -24,8 +25,13 @@ const EditarSerie = ({ match }) => {
       .get('/api/genres/')
       .then(res => {
         setGenres(res.data.data)
+        const genres = res.data.data
+        const encontrado = genres.find(value => data.genre === value.name)
+        if (encontrado) {
+          setGenreId(encontrado.id)
+        }
       })
-  }, [])
+  }, [data])
 
   //custom header
   const masterheader = {
@@ -37,20 +43,35 @@ const EditarSerie = ({ match }) => {
     backgroundRepeat: 'no-repeat'
   }
 
+  const onChangeGenre = e => {
+    setGenreId(e.target.value)
+  };
+  
   const onChange = field => e => {
     setForm({
       ...form,
-      [field]: e.target.value
+      [field]: e.target.value,
+
     })
   }
 
   const save = () => {
     axios
-      .put('/api/series' + match.params.id, form)
+      .put('/api/series/' + match.params.id, {
+        form,
+        genre: genreId
+      })
       .then(res => {
         setSuccess(true)
       })
   }
+
+  const seleciona = value => () => {
+    setForm({
+        ...form,
+        status: value
+    });
+  };
 
   if (success){
     return <Redirect to='/series' />
@@ -69,7 +90,7 @@ const EditarSerie = ({ match }) => {
                 <h1 className='font-weight-light text-white'>{data.name}</h1>
                 <div className='lead text-white'>
                   <Badge color='success'>Assistido</Badge>
-                  <Badge color='warning'>Para Asistir</Badge>
+                  <Badge color='warning'>Para Assistir</Badge>
                   Gênero: {data.genre}
                 </div>
               </div>
@@ -97,11 +118,20 @@ const EditarSerie = ({ match }) => {
           </div>
           <div className='form-group'>
           <label htmlFor='genres'>Gêneros</label>  
-          <select className='form-control' onChange={onChange('genre_id')}>
-            { genres.map(genre => <option key={genre.id} value={genre.id} select={genre.id === form.genre}>{genre.name}</option>)}
-          </select>
+          <select className='form-control' onChange={onChangeGenre} value={genreId}>
+            { genres.map(genre => <option key={genre.id} value={genre.id} >{genre.name}</option>)}
+          </select> 
           </div>  
-          <br/>
+          <div className="form-group">
+              <div className="form-check">
+                  <input className="form-check-input" type="radio" name="status" id="assistido" value="ASSISTIDO" defaultChecked={form.status === 'ASSISTIDO'} onClick={seleciona('ASSISTIDO')}/>
+                  <label className="form-check-label" htmlFor="assistido">Assistido</label>
+              </div>
+              <div className="form-check">
+                  <input className="form-check-input" type="radio" name="status" id="paraAssistir" value="PARA_ASSISTIR" defaultChecked={form.status === 'PARA_ASSISTIR'} onClick={seleciona('PARA_ASSISTIR')} />
+                  <label className="form-check-label" htmlFor="paraAssistir">Para assistir</label>
+              </div>
+          </div>
           <button type="button" onClick={save} className='btn btn-primary'>Salvar</button>
           <button className='btn btn-primary' onClick={() => setMode('INFO')}>Cancelar</button>
         </form>
