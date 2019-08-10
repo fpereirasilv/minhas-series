@@ -3,8 +3,6 @@ import axios from 'axios'
 import { Redirect } from 'react-router-dom'
 import { Badge } from 'reactstrap'
 
-//Comentario adiciondo por linha de comando
-
 const EditarSerie = ({ match }) => {
   const [form, setForm] = useState({})
   const [success, setSuccess] = useState(false)

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 
+//testando envio de arquivo por linha de camando.
+
 const Series = () => {
   const [data, setData] = useState([])
   useEffect(() => {
