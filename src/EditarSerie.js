@@ -47,16 +47,16 @@ const EditarSerie = ({ match }) => {
 
   const save = () => {
     axios
-      .put('/api/series/' + match.params.id, form)
+      .put('/api/series' + match.params.id, form)
       .then(res => {
         setSuccess(true)
       })
   }
 
   if (success){
-    return <Redirect to='/series' />
+    return <Redirect to='/series/' />
   }
-  
+
   return(
     <div>
       <header style={masterheader}>
