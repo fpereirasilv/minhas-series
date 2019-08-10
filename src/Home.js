@@ -11,9 +11,9 @@ const Home = () => {
       })    
   }, [])
   return (
-    <div>
-    <h1>Home</h1>
-    <pre>{JSON.stringify(data)}</pre>
+    <div className='container'>
+      <h1>Livro de Séries Assistidas e Para Assistir</h1>
+      <pre>{JSON.stringify(data)}</pre>
     </div>
   )
 }
