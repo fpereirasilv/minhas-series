@@ -54,7 +54,7 @@ const EditarSerie = ({ match }) => {
   }
 
   if (success){
-    return <Redirect to='/series/' />
+    return <Redirect to='/series' />
   }
 
   return(
@@ -98,7 +98,7 @@ const EditarSerie = ({ match }) => {
           </div>
           <div className='form-group'>
           <label htmlFor='genres'>Gêneros</label>  
-          <select className='form-control' onChange={onChange('genre')}>
+          <select className='form-control' onChange={onChange('genre_id')}>
             { genres.map(genre => <option key={genre.id} value={genre.id} select={genre.id === form.genre}>{genre.name}</option>)}
           </select>
           </div>  
