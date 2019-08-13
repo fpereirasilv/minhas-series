@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 
-//testando envio de arquivo por linha de camando.
-
 const Series = () => {
   const [data, setData] = useState([])
   useEffect(() => {
@@ -14,7 +12,7 @@ const Series = () => {
       })    
   }, [])
 
-  const deleteGenero = id => {
+  const deleteSerie = id => {
     axios
       .delete('/api/series/' + id)
       .then(res => {
@@ -29,7 +27,7 @@ const Series = () => {
           <th scope='row'>{record.id}</th>
           <td>{record.name}</td>
           <td>
-            <button onClick={() => deleteGenero(record.id)} className='btn btn-danger'>Exluir</button>
+            <button className='btn btn-danger' onClick={() => deleteSerie(record.id)}>Exluir</button>
             <Link to={'/series/' + record.id} className='btn btn-warning' >Editar</Link>            
           </td>
       </tr>
@@ -48,16 +46,18 @@ const Series = () => {
   }
   return (
     <div className='container'>
-    <h1>Séries</h1>    
-    <Link to='series/novo' className='btn btn-primary'>Novo Série</Link>
-    <table className="table">
-      <thead className="thead-dark">
-        <tr>
-          <th scope='col'>ID</th>
-          <th scope='col'>Nome</th>
-          <th scope='col'>Ações</th>
-        </tr>
-      </thead>
+      <h1>Séries</h1>    
+        <div>
+          <Link className='btn btn-primary' to='/series/novo' >Nova Série</Link>
+        </div>
+      <table className="table">
+        <thead className="thead-dark">
+          <tr>
+            <th scope='col'>ID</th>
+            <th scope='col'>Nome</th>
+            <th scope='col'>Ações</th>
+          </tr>
+        </thead>
       <tbody>
         {data.map(renderizaLinha)}
       </tbody>
